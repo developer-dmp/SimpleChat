@@ -138,14 +138,14 @@ public class MainActivity extends AppCompatActivity {
      * Helper method to validate the user has typed a valid message to send.
      */
     private void checkUserInput() {
-        if (!userInput.getText().toString().trim().isEmpty()) {
-            ChatMessage msg = new ChatMessage(userInput.getText().toString().trim(), myMessage);
-            messages.add(msg);
-            mAdapter.notifyDataSetChanged();
-            myMessage = !myMessage;
-            userInput.setText("");
+        String input = userInput.getText().toString().trim();
+        if (!input.isEmpty() && !input.endsWith(";")) {
+            messages.add(new ChatMessage(input, myMessage)); // add to list
+            mAdapter.notifyDataSetChanged(); // update UI
+            myMessage = !myMessage; // flips who "sent" the message
+            userInput.setText(""); // clears field
         } else {
-            Toast.makeText(MainActivity.this, "Please enter a message", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Please enter a valid message", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -153,9 +153,7 @@ public class MainActivity extends AppCompatActivity {
      * Method to save the chat to the device for future runs of the app.
      */
     private void saveChat() {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(preferenceFileChatKey, stringifyChat());
-        editor.apply();
+        preferences.edit().putString(preferenceFileChatKey, stringifyChat()).apply();
         Toast.makeText(this, "Chat saved!", Toast.LENGTH_SHORT).show();
     }
 
@@ -192,21 +190,15 @@ public class MainActivity extends AppCompatActivity {
      * so we do not load chat messages the next time the app opens.
      */
     private void removeSharedPrefs() {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove(preferenceFileChatKey);
-        editor.apply();
+        preferences.edit().remove(preferenceFileChatKey).apply();
     }
 
     /**
      * To break the ice
      */
     private void loadDummyMessages() {
-        ChatMessage msg = new ChatMessage("Hello from a friend", false);
-        ChatMessage msg2 = new ChatMessage("Hello friend!", true);
-        ChatMessage msg3 = new ChatMessage("I am well, how are you?", false);
-
-        messages.add(msg);
-        messages.add(msg2);
-        messages.add(msg3);
+        messages.add(new ChatMessage("Hello from a friend", false));
+        messages.add(new ChatMessage("Hello friend!", true));
+        messages.add(new ChatMessage("I am well, how are you?", false));
     }
 }
