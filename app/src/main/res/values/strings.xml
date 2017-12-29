@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Chat</string>
+    <string name="chat_image">Chat profile picture</string>
+
+    <string name="menu_action_delete_title">Delete Chat</string>
+    <string name="menu_action_save_chat_title">Save Chat</string>
+</resources>

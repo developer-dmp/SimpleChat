@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0091ff</color>
+    <color name="colorPrimaryDark">#0064cb</color>
+    <color name="colorAccent">#FF6E00</color>
+
+    <color name="outgoing_message">#0091ff</color>
+    <color name="outgoing_message_text">#ffffff</color>
+    <color name="incoming_message">#FF6E00</color>
+    <color name="incoming_message_text">#ffffff</color>
+</resources>
