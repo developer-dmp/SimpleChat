@@ -4,4 +4,6 @@
 
     <string name="menu_action_delete_title">Delete Chat</string>
     <string name="menu_action_save_chat_title">Save Chat</string>
+    <string name="enter_message_hint">Enter message</string>
+    <string name="send_button_description">Send</string>
 </resources>
