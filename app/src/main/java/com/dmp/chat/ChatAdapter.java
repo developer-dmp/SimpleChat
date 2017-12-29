@@ -11,20 +11,30 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by rtd1p on 12/28/2017.
+ * Implementation of {@link ArrayAdapter} to provide the
+ * view for the {@link android.widget.ListView} in the MainActivity.
+ *
+ * @author Domenic Polidoro
+ * @version 1.0
  */
 
 public class ChatAdapter extends ArrayAdapter<ChatMessage> {
 
     private LayoutInflater inflater;
-    private List<ChatMessage> messageList;
 
     public ChatAdapter(Context context, int resource, List<ChatMessage> messageList) {
         super (context, resource, messageList);
-        this.messageList = messageList;
         inflater = LayoutInflater.from(context);
     }
 
+    /**
+     * Invoked by the OS to draw each row of the {@link android.widget.ListView}.
+     * The message sender is determined by a boolean flag in my {@link ChatMessage}
+     * @param position the location in the {@link android.widget.ListView}
+     * @param convertView recycled view that we can modify
+     * @param parent parent to the convertView
+     * @return {@link View} to be displayed in this specific row (position)
+     */
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -33,6 +43,7 @@ public class ChatAdapter extends ArrayAdapter<ChatMessage> {
 
         ChatMessage message = getItem(position);
 
+        // determine who sent the message
         int layoutResource = message.isMine() ? R.layout.item_chat_outgoing : R.layout.item_chat_incoming;
 
         if (convertView != null) {
@@ -43,6 +54,7 @@ public class ChatAdapter extends ArrayAdapter<ChatMessage> {
             convertView.setTag(holder);
         }
 
+        // add the appropriate information
         holder.msg.setText(message.getContent());
         holder.time.setText(message.getTime());
         return convertView;
@@ -50,8 +62,7 @@ public class ChatAdapter extends ArrayAdapter<ChatMessage> {
 
     @Override
     public int getViewTypeCount() {
-        // return the total number of view types. this value should never change
-        // at runtime
+        // return the total number of view types.
         return 2;
     }
 
@@ -61,7 +72,10 @@ public class ChatAdapter extends ArrayAdapter<ChatMessage> {
         return position % 2;
     }
 
-
+    /**
+     * Class used to associate UI components to each
+     * inflation of the two possible XML layout files.
+     */
     private class ViewHolder {
         private TextView msg;
         private TextView time;

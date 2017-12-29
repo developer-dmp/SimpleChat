@@ -22,6 +22,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Driving class behind the entire chat.  Handles all user
+ * interaction and processes their requests accordingly.
+ *
+ * @author Domenic Polidoro
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton sendButton;
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         preferences = getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
 
+        // check to see if we need to restore a chat
         if (!preferences.getString(preferenceFileChatKey, "empty").equals("empty")) {
             restoreChat(preferences.getString(preferenceFileChatKey, "empty"));
             Toast.makeText(this, "Chat restored", Toast.LENGTH_SHORT).show();
@@ -55,12 +63,6 @@ public class MainActivity extends AppCompatActivity {
         mListView = (ListView)findViewById(R.id.message_listview);
         mAdapter = new ChatAdapter(this, R.layout.item_chat_outgoing, messages);
         mListView.setAdapter(mAdapter);
-//        mListView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return true;
-//            }
-//        });
 
         userInput = (EditText)findViewById(R.id.edittext_chatbox);
         userInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -84,6 +86,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Inflate our custom options menu for the user to interact with
+     * @param menu to which we add our elements to
+     * @return true since we are consuming the event
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -91,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles the user interaction with our menu
+     * @param item selected by the user
+     * @return true since we are consuming event
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -105,18 +117,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Helper method to parse the chat stored in the {@link SharedPreferences}
+     * and put its contents back into the {@link ArrayList} our custom adapter
+     * uses.
+     * @see ChatAdapter
+     * @param chat the string representation of the last saved chat
+     */
     private void restoreChat(String chat) {
+        // cuts out all the messages
         String[] chatMessages = chat.split(chatMessageDelim);
         for (String msg : chatMessages) {
-            Log.i("****", msg);
+            // cuts out al the contents within each message and adds them to the list
             String[] contents = msg.split(chatMessageContentsDelim);
-            Log.i("****", contents.toString());
             messages.add(new ChatMessage(contents[0], contents[1], Boolean.valueOf(contents[2])));
         }
     }
 
     /**
-     * Helper method to validate the user has typed a valid messsage to send.
+     * Helper method to validate the user has typed a valid message to send.
      */
     private void checkUserInput() {
         if (!userInput.getText().toString().trim().isEmpty()) {
@@ -131,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to save the chat to the device for future lives of the app.
+     * Method to save the chat to the device for future runs of the app.
      */
     private void saveChat() {
         SharedPreferences.Editor editor = preferences.edit();
@@ -170,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Helper method to remove the chat from the {@link SharedPreferences}
-     * so we do not load chat messages the next time the app operns.
+     * so we do not load chat messages the next time the app opens.
      */
     private void removeSharedPrefs() {
         SharedPreferences.Editor editor = preferences.edit();
@@ -179,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * To start the conversation
+     * To break the ice
      */
     private void loadDummyMessages() {
         ChatMessage msg = new ChatMessage("Hello from a friend", false);

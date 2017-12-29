@@ -1,42 +1,45 @@
 package com.dmp.chat;
 
 import java.text.SimpleDateFormat;
-import android.support.annotation.NonNull;
 
 import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by rtd1p on 12/28/2017.
+ * Class designed to facilitate OOP.
+ *
+ * @author Domenic Polidoro
+ * @version 1.0
  */
 
-public class ChatMessage {
+class ChatMessage {
 
     private String time;
     private String content;
     private boolean isMine;
-    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm a", Locale.US);
-    //private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy HH:mm a", Locale.US);
+    //private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy HH:mm a", Locale.US); // was too long for my liking
 
-    public ChatMessage(@NonNull String content, @NonNull boolean isMine) {
+    ChatMessage(String content, boolean isMine) {
         this.content = content;
         this.isMine = isMine;
-        this.time = sdf.format(new Date());
+        this.time = new SimpleDateFormat("HH:mm a", Locale.US).format(new Date());
     }
 
-    public ChatMessage(@NonNull String content, @NonNull String time, @NonNull boolean isMine) {
+    ChatMessage(String content, String time, boolean isMine) {
         this.content = content;
         this.isMine = isMine;
         this.time = time;
     }
 
-    public String getTime() {return time;}
+    String getTime() {
+        return time;
+    }
 
-    public String getContent() {
+    String getContent() {
         return content;
     }
 
-    public boolean isMine() {
+    boolean isMine() {
         return isMine;
     }
 }
